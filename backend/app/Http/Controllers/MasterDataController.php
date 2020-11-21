@@ -14,7 +14,7 @@ class MasterDataController extends Controller {
 		//クライアント側に送信したいマスターデータだけを選択
 		$master_login_item = MasterLoginItem::GetMasterLoginItem();
 		$master_quest = MasterQuest::GetMasterQuest();
-		$master_character = MasterCharacter::GetMasterQuest();
+		$master_character = MasterCharacter::GetMasterCharacter();
 		$master_gacha = MasterGacha::GetMasterGacha();
 		$master_shop = MasterShop::GetMasterShop();
 
