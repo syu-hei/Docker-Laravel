@@ -14,7 +14,7 @@ class CreateUserProfileTable extends Migration
 			$table->unsignedInteger('crystal_free')->default(0);
 			$table->unsignedInteger('friend_coin')->default(0);
 			$table->unsignedSmallInteger('tutorial_progress')->default(0);
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+      $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->primary('user_id');
         });
@@ -29,7 +29,7 @@ class CreateUserProfileTable extends Migration
         ");
         // トリガーの定義
         DB::statement("
-        create trigger update_tri before update on posts for each row
+        create trigger update_tri before update on user_profile for each row
           execute procedure set_update_time();
         ");
     }
@@ -37,8 +37,11 @@ class CreateUserProfileTable extends Migration
 
     public function down() {
         Schema::dropIfExists('user_profile');
-
-        // DBと関数とトリガーの削除処理
-        Schema::drop('medias');
+        DB::statement("
+        DROP TRIGGER update_trigger ON user_profile;
+        ");
+        DB::statement("
+            DROP FUNCTION set_update_time();
+        ");
     }
 }

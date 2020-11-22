@@ -26,7 +26,7 @@ class CreateUserCharacterTable extends Migration
         ");
         // トリガーの定義
         DB::statement("
-        create trigger update_tri before update on posts for each row
+        create trigger update_tri before update on user_character for each row
           execute procedure set_update_time();
         ");
     }
@@ -34,5 +34,11 @@ class CreateUserCharacterTable extends Migration
     public function down()
     {
         Schema::dropIfExists('user_character');
+        DB::statement("
+        DROP TRIGGER update_trigger ON user_character;
+        ");
+        DB::statement("
+            DROP FUNCTION set_update_time();
+        ");
     }
 }
