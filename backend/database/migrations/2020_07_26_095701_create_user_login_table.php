@@ -35,9 +35,6 @@ class CreateUserLoginTable extends Migration {
     {
         Schema::dropIfExists('user_login');
         DB::statement("
-        DROP TRIGGER update_trigger ON user_login;
-        ");
-        DB::statement("
             DROP FUNCTION set_update_time();
         ");
     }

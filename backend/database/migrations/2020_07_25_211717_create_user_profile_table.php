@@ -39,9 +39,6 @@ class CreateUserProfileTable extends Migration
     public function down() {
         Schema::dropIfExists('user_profile');
         DB::statement("
-        DROP TRIGGER update_trigger ON user_profile;
-        ");
-        DB::statement("
             DROP FUNCTION set_update_time();
         ");
     }
