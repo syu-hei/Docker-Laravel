@@ -28,7 +28,7 @@ class CreateUserQuestTable extends Migration
         ");
         // トリガーの定義
         DB::statement("
-        create trigger update_tri before update on posts for each row
+        create trigger update_tri before update on user_quest for each row
           execute procedure set_update_time();
         ");
     }
@@ -37,5 +37,11 @@ class CreateUserQuestTable extends Migration
     public function down()
     {
         Schema::dropIfExists('user_quest');
+        DB::statement("
+        DROP TRIGGER update_trigger ON user_quest;
+        ");
+        DB::statement("
+            DROP FUNCTION set_update_time();
+        ");
     }
 }

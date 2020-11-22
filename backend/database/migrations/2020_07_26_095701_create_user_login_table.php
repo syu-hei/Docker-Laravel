@@ -25,7 +25,7 @@ class CreateUserLoginTable extends Migration {
         ");
         // トリガーの定義
         DB::statement("
-        create trigger update_tri before update on posts for each row
+        create trigger update_tri before update on user_login for each row
           execute procedure set_update_time();
         ");
     }
@@ -33,8 +33,11 @@ class CreateUserLoginTable extends Migration {
     public function down()
     {
         Schema::dropIfExists('user_login');
-
-        // DBと関数とトリガーの削除処理
-        Schema::drop('medias');
+        DB::statement("
+        DROP TRIGGER update_trigger ON user_login;
+        ");
+        DB::statement("
+            DROP FUNCTION set_update_time();
+        ");
     }
 }
