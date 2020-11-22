@@ -18,7 +18,7 @@ class CreateUserQuestTable extends Migration
 			$table->primary(array('user_id', 'quest_id'));
         });
         // 関数の定義
-        DB::connection('public')->statement("
+        DB::statement("
         create or replace function set_update_time() returns trigger language plpgsql as
         $$
           begin
@@ -28,7 +28,7 @@ class CreateUserQuestTable extends Migration
         $$;
         ");
         // トリガーの定義
-        DB::connection('public')->statement("
+        DB::statement("
             create trigger update_trigger before update on medias for each row
               execute procedure set_update_time();
         ");
@@ -38,12 +38,13 @@ class CreateUserQuestTable extends Migration
     public function down()
     {
         Schema::dropIfExists('user_quest');
+
         // DBと関数とトリガーの削除処理
-        Schema::connection('public')->drop('medias');
-        DB::connection('public')->statement("
+        Schema::drop('medias');
+        DB::statement("
             DROP TRIGGER update_trigger ON medias;
         ");
-        DB::connection('public')->statement("
+        DB::statement("
             DROP FUNCTION set_update_time();
         ");
     }
