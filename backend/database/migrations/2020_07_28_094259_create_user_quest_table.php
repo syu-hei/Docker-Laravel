@@ -39,9 +39,6 @@ class CreateUserQuestTable extends Migration
     {
         Schema::dropIfExists('user_quest');
         DB::statement("
-        DROP TRIGGER update_trigger ON user_quest;
-        ");
-        DB::statement("
             DROP FUNCTION set_update_time();
         ");
     }

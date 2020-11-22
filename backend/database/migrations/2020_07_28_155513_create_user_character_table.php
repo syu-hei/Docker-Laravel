@@ -36,9 +36,6 @@ class CreateUserCharacterTable extends Migration
     {
         Schema::dropIfExists('user_character');
         DB::statement("
-        DROP TRIGGER update_trigger ON user_character;
-        ");
-        DB::statement("
             DROP FUNCTION set_update_time();
         ");
     }
