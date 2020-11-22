@@ -15,10 +15,33 @@ class CreateUserCharacterTable extends Migration
 			$table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });
+        // 関数の定義
+        DB::connection('public')->statement("
+        create or replace function set_update_time() returns trigger language plpgsql as
+        $$
+          begin
+            new.updated_at = CURRENT_TIMESTAMP;
+            return new;
+          end;
+        $$;
+        ");
+        // トリガーの定義
+        DB::connection('public')->statement("
+            create trigger update_trigger before update on medias for each row
+              execute procedure set_update_time();
+        ");
     }
 
     public function down()
     {
         Schema::dropIfExists('user_character');
+        // DBと関数とトリガーの削除処理
+        Schema::connection('public')->drop('medias');
+        DB::connection('public')->statement("
+            DROP TRIGGER update_trigger ON medias;
+        ");
+        DB::connection('public')->statement("
+            DROP FUNCTION set_update_time();
+        ");
     }
 }
