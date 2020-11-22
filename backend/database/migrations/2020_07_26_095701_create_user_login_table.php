@@ -11,7 +11,7 @@ class CreateUserLoginTable extends Migration {
 			$table->unsignedSmallInteger('login_day')->default(0);
             $table->timestamp('last_login_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->primary('user_id');
         });
         // 関数の定義

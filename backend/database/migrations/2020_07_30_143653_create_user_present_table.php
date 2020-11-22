@@ -16,7 +16,7 @@ class CreateUserPresentTable extends Migration
 			$table->string('description', 32)->charset('utf8');
 			$table->timestamp('limited_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
         // 関数の定義
         DB::connection('public')->statement("

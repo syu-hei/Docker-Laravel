@@ -13,7 +13,7 @@ class CreateUserCharacterTable extends Migration
 			$table->string('user_id', 37)->charset('utf8');
 			$table->unsignedInteger('character_id')->default(0);
 			$table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
         // 関数の定義
         DB::connection('public')->statement("
