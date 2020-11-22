@@ -20,17 +20,18 @@ class CreateUserPresentTable extends Migration
         });
         // 関数の定義
         DB::statement("
-        create function set_update_time() returns opaque as '
-          begin
-            new.updated_at := ''now'';
-            return new;
-          end;
-        ' language 'plpgsql';
+            create or replace function set_update_time() returns trigger language plpgsql as
+            $$
+              begin
+                new.updated_at = CURRENT_TIMESTAMP;
+                return new;
+              end;
+            $$;
         ");
         // トリガーの定義
         DB::statement("
-        create trigger update_tri before update on user_present for each row
-          execute procedure set_update_time();
+            create trigger update_trigger before update on user_present for each row
+              execute procedure set_update_time();
         ");
     }
 

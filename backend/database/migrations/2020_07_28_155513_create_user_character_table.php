@@ -9,25 +9,26 @@ class CreateUserCharacterTable extends Migration
     public function up()
     {
         Schema::create('user_character', function (Blueprint $table) {
-            $table->increments('id');
-			$table->string('user_id', 37)->charset('utf8');
-			$table->unsignedInteger('character_id')->default(0);
-			$table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+                $table->increments('id');
+			    $table->string('user_id', 37)->charset('utf8');
+			    $table->unsignedInteger('character_id')->default(0);
+			    $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+			    $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
         // 関数の定義
         DB::statement("
-        create function set_update_time() returns opaque as '
-          begin
-            new.updated_at := ''now'';
-            return new;
-          end;
-        ' language 'plpgsql';
+            create or replace function set_update_time() returns trigger language plpgsql as
+            $$
+              begin
+                new.updated_at = CURRENT_TIMESTAMP;
+                return new;
+              end;
+            $$;
         ");
         // トリガーの定義
         DB::statement("
-        create trigger update_tri before update on user_character for each row
-          execute procedure set_update_time();
+            create trigger update_trigger before update on user_character for each row
+              execute procedure set_update_time();
         ");
     }
 
