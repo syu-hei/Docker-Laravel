@@ -14,7 +14,7 @@ class CreateUserQuestTable extends Migration
 			$table->unsignedInteger('score')->default(0);
 			$table->unsignedInteger('clear_time')->default(0);
 			$table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->primary(array('user_id', 'quest_id'));
         });
         // 関数の定義

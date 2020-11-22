@@ -15,7 +15,7 @@ class CreateUserProfileTable extends Migration
 			$table->unsignedInteger('friend_coin')->default(0);
 			$table->unsignedSmallInteger('tutorial_progress')->default(0);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->primary('user_id');
         });
         // 関数の定義
