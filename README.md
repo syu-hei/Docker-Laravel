@@ -1,3 +1,3 @@
 # Docker-Laravel
-DockerでLaravel-APIのLEMP環境を構築しました。
+Dockerで[Laravel-API](https://github.com/syu-hei/Laravel-API)のLEMP環境を構築しました。
 
