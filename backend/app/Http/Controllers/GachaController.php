@@ -47,16 +47,14 @@ class GachaController extends Controller
 			$character_id = 0;
 			$weight_sum = 0;
 			foreach ($master_gacha_character_list as $master_gacha_character) {
-				//ウエイトの合計値を計算
+
 				$weight_sum += $master_gacha_character->weight;
 			}
-			//ウエイトの合計値に対して乱数を設定
 			$random = mt_rand(1, $weight_sum);
 			$sum = 0;
 			foreach ($master_gacha_character_list as $master_gacha_character) {
 				$sum += $master_gacha_character->weight;
 				if ($random <= $sum) {
-					//キャラクターIDが決定したらループ終了
 					$character_id = $master_gacha_character->character_id;
 
 					break;
