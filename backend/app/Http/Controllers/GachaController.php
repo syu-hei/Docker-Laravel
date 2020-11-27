@@ -14,39 +14,35 @@ class GachaController extends Controller
 	{
 		$client_master_version = $request->client_master_version;
 		$user_id = $request->user_id;
-		$gacha_id = $request->gacha_id; //1
+		$gacha_id = $request->gacha_id;
 
-		//マスターデータチェック
 		if (!MasterDataService::CheckMasterDataVersion($client_master_version)) {
 			return config('error.ERROR_MASTER_DATA_UPDATE');
 		}
 
-		//user_profileテーブルからレコードを取得
 		$user_profile = UserProfile::where('user_id', $user_id)->first();
 
-		//レコード存在チェック
+
 		if (!$user_profile) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		//ガチャマスターデータを取得
 		$master_gacha = MasterGacha::GetMasterGachaByGachaId($gacha_id);
-		//マスターデータ存在チェック
+
 		if (is_null($master_gacha)) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		//値の妥当性の検証
 		$this->validation($user_profile, $master_gacha);
 
-		//ガチャ商品マスターデータを取得
+
 		$master_gacha_character_list = MasterGachaCharacter::GetMasterGachaCharacterByGachaId($gacha_id);
-		//マスターデータ存在チェック
+
 		if (is_null($master_gacha_character_list)) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		$user_characters = array(); //取得キャラクターのリスト
+		$user_characters = array();
 		for ($i =0; $i < $master_gacha->draw_count; $i++) {
 			$character_id = 0;
 			$weight_sum = 0;
@@ -72,7 +68,6 @@ class GachaController extends Controller
 			array_push($user_characters, $user_character);
 		}
 
-		//コストの減算
 		if ($master_gacha->cost_type == config('constants.GACHA_COST_TYPE_CRYSTAL')) {
 			$user_profile->crystal -= $master_gacha->cost_amount;
 		} else if ($master_gacha->cost_type == config('constants.GACHA_COST_TYPE_CRYSTAL_FREE')) {
@@ -86,7 +81,6 @@ class GachaController extends Controller
 			$user_profile->friend_coin -= $master_gacha->cost_amount;
 		}
 
-		//テーブルへの挿入
 		try {
 			foreach ($user_characters as $user_character) {
 				$user_character->save();
@@ -96,7 +90,6 @@ class GachaController extends Controller
 			return config('error.ERROR_DB_UPDATE');
 		}
 
-		//クライアントへのレスポンス
 		$user_profile = UserProfile::where('user_id', $user_id)->first();
 		$user_character_list = UserCharacter::where('user_id', $user_id)->get();
 		$response = array(
@@ -110,7 +103,6 @@ class GachaController extends Controller
 
 	private function validation($user_profile, $master_gacha)
 	{
-		//スケジュールチェック
 		if (time() < strtotime($master_gacha->open_at)) {
 			return config('error.ERROR_INVALID_SCHEDULE');
 		}
@@ -118,7 +110,7 @@ class GachaController extends Controller
 			return config('error.ERROR_INVALID_SCHEDULE');
 		}
 
-		//所持通貨チェック
+
 		if ($master_gacha->cost_type == config('constants.GACHA_COST_TYPE_CRYSTAL')) {
 			if ($user_profile->crystal < $master_gacha->cost_amount) {
 				return config('error.ERROR_COST_SHORTAGE');
