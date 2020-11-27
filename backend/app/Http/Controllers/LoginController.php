@@ -20,7 +20,6 @@ class LoginController extends Controller
 			return config('error.ERROR_MASTER_DATA_UPDATE');
 		}
 
-		//user_profileテーブルのレコードを取得
 		$user_profile = UserProfile::where('user_id', $user_id)->first();
 
 		if (!$user_profile) {
