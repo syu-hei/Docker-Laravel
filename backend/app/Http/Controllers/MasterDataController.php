@@ -11,7 +11,6 @@ use App\MasterShop;
 
 class MasterDataController extends Controller {
 	public function Get(Request $request) {
-		//クライアント側に送信したいマスターデータだけを選択
 		$master_login_item = MasterLoginItem::GetMasterLoginItem();
 		$master_quest = MasterQuest::GetMasterQuest();
 		$master_character = MasterCharacter::GetMasterCharacter();
