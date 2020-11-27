@@ -14,30 +14,24 @@ class QuestController extends Controller
 	{
 		$user_id = $request->user_id;
 
-		//user_profileテーブルのレコードを取得
 		$user_profile = UserProfile::where('user_id', $user_id)->first();
 
-		//レコード存在チェック
 		if (!$user_profile) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		//チュートリアル進行状況の確認
 		if (config('constants.TUTORIAL_QUEST') <= $user_profile->tutorial_progress) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		//チュートリアル進行状況の更新
 		$user_profile->tutorial_progress = config('constants.TUTORIAL_QUEST');
 
-		//データの書き込み
 		try {
 			$user_profile->save();
 		} catch (\PDOException $e) {
 			return config('error.ERROR_DB_UPDATE');
 		}
 
-		//クライアントへのレスポンス
 		$user_profile = UserProfile::where('user_id', $user_id)->first();
 		$response = array(
 			'user_profile' => $user_profile,
@@ -49,27 +43,23 @@ class QuestController extends Controller
 	{
 		$client_master_version = $request->client_master_version;
 		$user_id = $request->user_id;
-		$quest_id = $request->quest_id; //1
+		$quest_id = $request->quest_id;
 
-		//マスターデータチェック
 		if (!MasterDataService::CheckMasterDataVersion($client_master_version)) {
 			return config('error.ERROR_MASTER_DATA_UPDATE');
 		}
 
-		//user_profileテーブルからレコードを取得
 		$user_profile = UserProfile::where('user_id', $user_id)->first();
-		//レコード存在チェック
+
 		if (!$user_profile) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		//クエストマスターデータを取得
 		$master_quest = MasterQuest::GetMasterQuestByQuestId($quest_id);
 		if (is_null($master_quest)) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		//スケジュールチェック
 		if (time() < strtotime($master_quest->open_at)) {
 			return config('error.ERROR_INVALID_SCHEDULE');
 		}
@@ -77,7 +67,6 @@ class QuestController extends Controller
 			return config('error.ERROR_INVALID_SCHEDULE');
 		}
 
-		//user_questテーブルからレコードを取得
 		$user_quest = UserQuest::where('user_id', $user_id)->where('quest_id', $quest_id)->first();
 		if (!$user_quest) {
 			$user_quest = new UserQuest;
@@ -86,14 +75,12 @@ class QuestController extends Controller
 			$user_quest->status = config('constants.QUEST_START');
 		}
 
-		//データの書き込み
 		try {
 			$user_quest->save();
 		} catch (\PDOException $e) {
 			return config('error.ERROR_DB_UPDATE');
 		}
 
-		//クライアントへのレスポンス
 		$user_quest_list = UserQuest::where('user_id', $user_id)->get();
 		$response = array(
 			'user_quest' => $user_quest_list,
@@ -109,13 +96,11 @@ class QuestController extends Controller
 		$score = (int)$request->score; //654321
 		$clear_time = (int)$request->clear_time; //150
 
-		//クエストマスターデータを取得
 		$master_quest = MasterQuest::GetMasterQuestByQuestId($quest_id);
 		if (is_null($master_quest)) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		//スケジュールチェック
 		if (time() < strtotime($master_quest->open_at)) {
 			return config('error.ERROR_INVALID_SCHEDULE');
 		}
@@ -123,7 +108,6 @@ class QuestController extends Controller
 			return config('error.ERROR_INVALID_SCHEDULE');
 		}
 
-		//値の検証例
 		if ($score <= 0 || 1000000 < $score) {
 			return config('error.ERROR_INVALID_DATA');
 		}
@@ -131,20 +115,16 @@ class QuestController extends Controller
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		//user_questテーブルからレコードを取得
 		$user_quest = UserQuest::where('user_id', $user_id)->where('quest_id', $quest_id)->first();
 		if (!$user_quest) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		//user_profileテーブルからレコードを取得
 		$user_profile = UserProfile::where('user_id', $user_id)->first();
-		//レコード存在チェック
 		if (!$user_profile) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		//初回クリア報酬
 		if ($user_quest->status != config('constants.QUEST_CLEAR')) {
 			switch ($master_quest->item_type) {
 				case config('constants.ITEM_TYPE_CRYSTAL'):
@@ -161,12 +141,10 @@ class QuestController extends Controller
 			}
 		}
 
-		//user_questの更新
 		$user_quest->status = config('constants.QUEST_CLEAR');
 		$user_quest->score = $score;
 		$user_quest->clear_time = $clear_time;
 
-		//データの書き込み
 		try {
 			$user_profile->save();
 			$user_quest->save();
@@ -174,7 +152,6 @@ class QuestController extends Controller
 			return config('error.ERROR_DB_UPDATE');
 		}
 
-		//クライアントへのレスポンス
 		$user_quest_list = UserQuest::where('user_id', $user_id)->get();
 		$response = array(
 			'user_profile' => $user_profile,
