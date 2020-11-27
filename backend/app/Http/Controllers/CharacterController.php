@@ -15,22 +15,17 @@ class CharacterController extends Controller
 		$client_master_version = $request->client_master_version;
 		$user_id = $request->user_id;
 
-		//マスターデータチェック
 		if (!MasterDataService::CheckMasterDataVersion($client_master_version)) {
 			return config('error.ERROR_MASTER_DATA_UPDATE');
 		}
 
-		//user_profileテーブルのレコードを取得
 		$user_profile = UserProfile::where('user_id', $user_id)->first();
-		//レコード存在チェック
 		if (!$user_profile) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		//user_characterテーブルからレコードを取得
 		$user_character_list = UserCharacter::where('user_id', $user_id)->get();
 
-		//クライアントへのレスポンス
 		$response = array(
 			'user_character' => $user_character_list,
 		);
@@ -44,34 +39,27 @@ class CharacterController extends Controller
 		$user_id = $request->user_id;
 		$id = $request->id;
 
-		//マスターデータチェック
 		if (!MasterDataService::CheckMasterDataVersion($client_master_version)) {
 			return config('error.ERROR_MASTER_DATA_UPDATE');
 		}
 
-		//user_profileテーブルのレコードを取得
 		$user_profile = UserProfile::where('user_id', $user_id)->first();
-		//レコード存在チェック
 		if (!$user_profile) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
-		//user_characterテーブルからレコードを取得
 		$user_character = UserCharacter::where('user_id', $user_id)->where('id', $id)->first();
-		//キャラクターが存在するかチェック
 		if (!$user_character) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
 		$master_character = MasterCharacter::GetMasterCharacterByCharacterId($user_character->character_id);
-		//マスターデータ存在チェック
 		if (is_null($master_character)) {
 			return config('error.ERROR_INVALID_DATA');
 		}
 
 		$user_profile->friend_coin += $master_character->sell_point;
 
-		//データの書き込み
 		try {
 			$user_profile->save();
 			$user_character->delete();
@@ -79,7 +67,6 @@ class CharacterController extends Controller
 			config('error.ERROR_DB_UPDATE');
 		}
 
-		//クライアントへのレスポンス
 		$user_profile = UserProfile::where('user_id', $user_id)->first();
 		$user_character_list = UserCharacter::where('user_id', $user_id)->get();
 		$response = array(
