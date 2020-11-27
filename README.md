@@ -5,26 +5,26 @@ Dockerで[Laravel-API](https://github.com/syu-hei/Laravel-API)のLEMP環境を�
 [Docker-Laravel/backend](https://github.com/syu-hei/Docker-Laravel/tree/main/backend)をHerokuにデプロイすることで[SocialGame](https://github.com/syu-hei/SocialGame)用の簡易サーバーを立てました。  
 API URL : https://docker-laravel-201120.herokuapp.com/  
 ## Routes
-### /master_data
+* https://docker-laravel-201120.herokuapp.com/master_data
 
-### /registration
+https://docker-laravel-201120.herokuapp.com/registration
 
-### /login
+https://docker-laravel-201120.herokuapp.com/login
 
-### /quest_tutorial
+https://docker-laravel-201120.herokuapp.com/quest_tutorial
 
-### /quest_start
+https://docker-laravel-201120.herokuapp.com/quest_start
 
-### /quest_end
+https://docker-laravel-201120.herokuapp.com/quest_end
 
-### /character
+https://docker-laravel-201120.herokuapp.com/character
 
-### /character_sell
+https://docker-laravel-201120.herokuapp.com/character_sell
 
-### /gacha
+https://docker-laravel-201120.herokuapp.com/gacha
 
-### /shop
+https://docker-laravel-201120.herokuapp.com/shop
 
-### /present_list
+https://docker-laravel-201120.herokuapp.com/present_list
 
-### /present
+https://docker-laravel-201120.herokuapp.com/present
