@@ -5,27 +5,27 @@ Dockerで[Laravel-API](https://github.com/syu-hei/Laravel-API)のLEMP環境を�
 [Docker-Laravel/backend](https://github.com/syu-hei/Docker-Laravel/tree/main/backend)をHerokuにデプロイすることで[SocialGame](https://github.com/syu-hei/SocialGame)用の簡易サーバーを立てました。  
 API URL : https://docker-laravel-201120.herokuapp.com/  
 ## Routes
-### マスターデータを返す
+### マスターデータ
 * https://docker-laravel-201120.herokuapp.com/master_data
-### ユーザーデータ返す
+### ユーザーデータ
 * https://docker-laravel-201120.herokuapp.com/registration
-### ログイン日数を返す
+### ログイン日数
 * https://docker-laravel-201120.herokuapp.com/login
-### チュートリアルの進行度を数値で返す
+### チュートリアルの進行度
 * https://docker-laravel-201120.herokuapp.com/quest_tutorial
-### クエストのスタートを数値で返す
+### クエストのスタート
 * https://docker-laravel-201120.herokuapp.com/quest_start
-###  クエストの終わりを数値で返す
+###  クエストのエンド
 * https://docker-laravel-201120.herokuapp.com/quest_end
-### キャラクターの種類をIDで返す
+### キャラクターの種類
 * https://docker-laravel-201120.herokuapp.com/character
 ### キャラクターの売却処理
 * https://docker-laravel-201120.herokuapp.com/character_sell
-### ガチャシステムの処理
+### ガチャシステム
 * https://docker-laravel-201120.herokuapp.com/gacha
-### 購入するアイテムのIDを返す
+### アイテムの購入
 * https://docker-laravel-201120.herokuapp.com/shop
-### ユーザーのプレゼントリストにあるアイテムを返す
+### ユーザーのプレゼントリスト
 * https://docker-laravel-201120.herokuapp.com/present_list
 ### 獲得できるプレゼントか判断する('取得期限が切れていないか'など)
 * https://docker-laravel-201120.herokuapp.com/present
